@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package ShoppingBasket;
+
+option go_package = "./proto;ShoppingBasket";
+
+service ShoppingBasket {
+	rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {}
+	rpc GetEvent(GetEventByIdRequest) returns (GetEventByIdResponse) {}
+}
+
+// Event
+message Event {
+	string id = 1;
+	string name = 2;
+	int64 date = 3;
+}
+
+message CreateEventRequest {
+	string name = 1;
+}
+
+message CreateEventResponse {
+	Event event = 1;
+}
+
+message GetEventByIdRequest {
+	string id = 1;
+}
+
+message GetEventByIdResponse {
+	Event event = 1;
+}
