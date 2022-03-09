@@ -17,21 +17,34 @@ type ShoppingBasket struct {
 	eventRepo      repository.IEventRepository
 }
 
-// NewShoppingBasket IDE support to generate interface stub
-func NewShoppingBasket() pb.ShoppingBasketHandler {
-	return &ShoppingBasket{}
+func (e *ShoppingBasket) CreateBasket(ctx context.Context, request *pb.CreateBasketRequest, response *pb.CreateBasketResponse) error {
+	//TODO implement me
+	log.Infof("Received ShoppingBasket.CreateBasket request: %v", request)
+	userId := uuid.MustParse(request.UserId)
+	basketToSave := &ent.Basket{UserId: userId}
+	basketFromRepo, err := e.basketRepo.AddBasket(ctx, basketToSave)
+	if err != nil {
+		return err
+	}
+	response.Basket = &pb.Basket{
+		BasketId: basketFromRepo.ID.String(),
+		UserId:   basketFromRepo.UserId.String(),
+	}
+	return nil
 }
 
-// NewShoppingBasketHandler takes in interfaces and provider ShoppingBasket
-func NewShoppingBasketHandler(
-	basketRepo repository.IBasketRepository,
-	basketLineRepo repository.IBasketLineRepository,
-	eventRepo repository.IEventRepository) (*ShoppingBasket, error) {
-	return &ShoppingBasket{
-		basketRepo:     basketRepo,
-		basketLineRepo: basketLineRepo,
-		eventRepo:      eventRepo,
-	}, nil
+func (e *ShoppingBasket) GetBasketById(ctx context.Context, request *pb.GetBasketByIdRequest, response *pb.GetBasketByIdResponse) error {
+	log.Infof("Received ShoppingBasket.GetBasketById request: %v", request)
+	basketId := uuid.MustParse(request.BasketId)
+	basketFromRepo, err := e.basketRepo.GetBasketById(ctx, basketId)
+	if err != nil {
+		return err
+	}
+	response.Basket = &pb.Basket{
+		BasketId: basketFromRepo.ID.String(),
+		UserId:   basketFromRepo.UserId.String(),
+	}
+	return nil
 }
 
 func (e *ShoppingBasket) CreateEvent(ctx context.Context, request *pb.CreateEventRequest, response *pb.CreateEventResponse) error {
@@ -49,7 +62,7 @@ func (e *ShoppingBasket) CreateEvent(ctx context.Context, request *pb.CreateEven
 	return nil
 }
 
-func (e *ShoppingBasket) GetEvent(ctx context.Context, request *pb.GetEventByIdRequest, response *pb.GetEventByIdResponse) error {
+func (e *ShoppingBasket) GetEventById(ctx context.Context, request *pb.GetEventByIdRequest, response *pb.GetEventByIdResponse) error {
 	log.Infof("Received ShoppingBasket.GetEvent request: %v", request)
 	id := uuid.MustParse(request.Id)
 	eventFromRepo, err := e.eventRepo.GetEventById(ctx, id)
@@ -62,4 +75,21 @@ func (e *ShoppingBasket) GetEvent(ctx context.Context, request *pb.GetEventByIdR
 		Date: eventFromRepo.Date.Unix(),
 	}
 	return nil
+}
+
+// NewShoppingBasketHandler takes in interfaces and provider ShoppingBasket
+func NewShoppingBasketHandler(
+	basketRepo repository.IBasketRepository,
+	basketLineRepo repository.IBasketLineRepository,
+	eventRepo repository.IEventRepository) (*ShoppingBasket, error) {
+	return &ShoppingBasket{
+		basketRepo:     basketRepo,
+		basketLineRepo: basketLineRepo,
+		eventRepo:      eventRepo,
+	}, nil
+}
+
+// NewShoppingBasket IDE support to generate interface stub
+func NewShoppingBasket() pb.ShoppingBasketHandler {
+	return &ShoppingBasket{}
 }

@@ -6,7 +6,9 @@ option go_package = "./proto;ShoppingBasket";
 
 service ShoppingBasket {
 	rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {}
-	rpc GetEvent(GetEventByIdRequest) returns (GetEventByIdResponse) {}
+	rpc GetEventById(GetEventByIdRequest) returns (GetEventByIdResponse) {}
+	rpc CreateBasket(CreateBasketRequest) returns (CreateBasketResponse) {}
+	rpc GetBasketById(GetBasketByIdRequest) returns (GetBasketByIdResponse) {}
 }
 
 // Event
@@ -30,4 +32,26 @@ message GetEventByIdRequest {
 
 message GetEventByIdResponse {
 	Event event = 1;
+}
+
+// Basket
+message Basket {
+	string basket_id = 1;
+	string user_id = 2;
+}
+
+message CreateBasketRequest {
+	string user_id = 1;
+}
+
+message CreateBasketResponse {
+	Basket basket = 1;
+}
+
+message GetBasketByIdRequest {
+	string basket_id = 1;
+}
+
+message GetBasketByIdResponse {
+	Basket basket = 1;
 }

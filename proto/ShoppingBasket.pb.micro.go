@@ -37,7 +37,9 @@ func NewShoppingBasketEndpoints() []*api.Endpoint {
 
 type ShoppingBasketService interface {
 	CreateEvent(ctx context.Context, in *CreateEventRequest, opts ...client.CallOption) (*CreateEventResponse, error)
-	GetEvent(ctx context.Context, in *GetEventByIdRequest, opts ...client.CallOption) (*GetEventByIdResponse, error)
+	GetEventById(ctx context.Context, in *GetEventByIdRequest, opts ...client.CallOption) (*GetEventByIdResponse, error)
+	CreateBasket(ctx context.Context, in *CreateBasketRequest, opts ...client.CallOption) (*CreateBasketResponse, error)
+	GetBasketById(ctx context.Context, in *GetBasketByIdRequest, opts ...client.CallOption) (*GetBasketByIdResponse, error)
 }
 
 type shoppingBasketService struct {
@@ -62,9 +64,29 @@ func (c *shoppingBasketService) CreateEvent(ctx context.Context, in *CreateEvent
 	return out, nil
 }
 
-func (c *shoppingBasketService) GetEvent(ctx context.Context, in *GetEventByIdRequest, opts ...client.CallOption) (*GetEventByIdResponse, error) {
-	req := c.c.NewRequest(c.name, "ShoppingBasket.GetEvent", in)
+func (c *shoppingBasketService) GetEventById(ctx context.Context, in *GetEventByIdRequest, opts ...client.CallOption) (*GetEventByIdResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.GetEventById", in)
 	out := new(GetEventByIdResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) CreateBasket(ctx context.Context, in *CreateBasketRequest, opts ...client.CallOption) (*CreateBasketResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.CreateBasket", in)
+	out := new(CreateBasketResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) GetBasketById(ctx context.Context, in *GetBasketByIdRequest, opts ...client.CallOption) (*GetBasketByIdResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.GetBasketById", in)
+	out := new(GetBasketByIdResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,13 +98,17 @@ func (c *shoppingBasketService) GetEvent(ctx context.Context, in *GetEventByIdRe
 
 type ShoppingBasketHandler interface {
 	CreateEvent(context.Context, *CreateEventRequest, *CreateEventResponse) error
-	GetEvent(context.Context, *GetEventByIdRequest, *GetEventByIdResponse) error
+	GetEventById(context.Context, *GetEventByIdRequest, *GetEventByIdResponse) error
+	CreateBasket(context.Context, *CreateBasketRequest, *CreateBasketResponse) error
+	GetBasketById(context.Context, *GetBasketByIdRequest, *GetBasketByIdResponse) error
 }
 
 func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, opts ...server.HandlerOption) error {
 	type shoppingBasket interface {
 		CreateEvent(ctx context.Context, in *CreateEventRequest, out *CreateEventResponse) error
-		GetEvent(ctx context.Context, in *GetEventByIdRequest, out *GetEventByIdResponse) error
+		GetEventById(ctx context.Context, in *GetEventByIdRequest, out *GetEventByIdResponse) error
+		CreateBasket(ctx context.Context, in *CreateBasketRequest, out *CreateBasketResponse) error
+		GetBasketById(ctx context.Context, in *GetBasketByIdRequest, out *GetBasketByIdResponse) error
 	}
 	type ShoppingBasket struct {
 		shoppingBasket
@@ -99,6 +125,14 @@ func (h *shoppingBasketHandler) CreateEvent(ctx context.Context, in *CreateEvent
 	return h.ShoppingBasketHandler.CreateEvent(ctx, in, out)
 }
 
-func (h *shoppingBasketHandler) GetEvent(ctx context.Context, in *GetEventByIdRequest, out *GetEventByIdResponse) error {
-	return h.ShoppingBasketHandler.GetEvent(ctx, in, out)
+func (h *shoppingBasketHandler) GetEventById(ctx context.Context, in *GetEventByIdRequest, out *GetEventByIdResponse) error {
+	return h.ShoppingBasketHandler.GetEventById(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) CreateBasket(ctx context.Context, in *CreateBasketRequest, out *CreateBasketResponse) error {
+	return h.ShoppingBasketHandler.CreateBasket(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) GetBasketById(ctx context.Context, in *GetBasketByIdRequest, out *GetBasketByIdResponse) error {
+	return h.ShoppingBasketHandler.GetBasketById(ctx, in, out)
 }
