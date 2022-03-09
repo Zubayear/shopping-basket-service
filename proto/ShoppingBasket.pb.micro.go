@@ -40,6 +40,11 @@ type ShoppingBasketService interface {
 	GetEventById(ctx context.Context, in *GetEventByIdRequest, opts ...client.CallOption) (*GetEventByIdResponse, error)
 	CreateBasket(ctx context.Context, in *CreateBasketRequest, opts ...client.CallOption) (*CreateBasketResponse, error)
 	GetBasketById(ctx context.Context, in *GetBasketByIdRequest, opts ...client.CallOption) (*GetBasketByIdResponse, error)
+	CreateBasketLine(ctx context.Context, in *CreateBasketLineRequest, opts ...client.CallOption) (*CreateBasketLineResponse, error)
+	GetBasketLineById(ctx context.Context, in *GetBasketLineByIdRequest, opts ...client.CallOption) (*GetBasketLineByIdResponse, error)
+	UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, opts ...client.CallOption) (*UpdateBasketLineResponse, error)
+	DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, opts ...client.CallOption) (*DeleteBasketLineByIdResponse, error)
+	GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, opts ...client.CallOption) (*GetBasketLinesByBasketIdResponse, error)
 }
 
 type shoppingBasketService struct {
@@ -94,6 +99,56 @@ func (c *shoppingBasketService) GetBasketById(ctx context.Context, in *GetBasket
 	return out, nil
 }
 
+func (c *shoppingBasketService) CreateBasketLine(ctx context.Context, in *CreateBasketLineRequest, opts ...client.CallOption) (*CreateBasketLineResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.CreateBasketLine", in)
+	out := new(CreateBasketLineResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) GetBasketLineById(ctx context.Context, in *GetBasketLineByIdRequest, opts ...client.CallOption) (*GetBasketLineByIdResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.GetBasketLineById", in)
+	out := new(GetBasketLineByIdResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, opts ...client.CallOption) (*UpdateBasketLineResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.UpdateBasketLine", in)
+	out := new(UpdateBasketLineResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, opts ...client.CallOption) (*DeleteBasketLineByIdResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.DeleteBasketLineById", in)
+	out := new(DeleteBasketLineByIdResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shoppingBasketService) GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, opts ...client.CallOption) (*GetBasketLinesByBasketIdResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.GetBasketLinesByBasketId", in)
+	out := new(GetBasketLinesByBasketIdResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ShoppingBasket service
 
 type ShoppingBasketHandler interface {
@@ -101,6 +156,11 @@ type ShoppingBasketHandler interface {
 	GetEventById(context.Context, *GetEventByIdRequest, *GetEventByIdResponse) error
 	CreateBasket(context.Context, *CreateBasketRequest, *CreateBasketResponse) error
 	GetBasketById(context.Context, *GetBasketByIdRequest, *GetBasketByIdResponse) error
+	CreateBasketLine(context.Context, *CreateBasketLineRequest, *CreateBasketLineResponse) error
+	GetBasketLineById(context.Context, *GetBasketLineByIdRequest, *GetBasketLineByIdResponse) error
+	UpdateBasketLine(context.Context, *UpdateBasketLineRequest, *UpdateBasketLineResponse) error
+	DeleteBasketLineById(context.Context, *DeleteBasketLineByIdRequest, *DeleteBasketLineByIdResponse) error
+	GetBasketLinesByBasketId(context.Context, *GetBasketLinesByBasketIdRequest, *GetBasketLinesByBasketIdResponse) error
 }
 
 func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, opts ...server.HandlerOption) error {
@@ -109,6 +169,11 @@ func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, 
 		GetEventById(ctx context.Context, in *GetEventByIdRequest, out *GetEventByIdResponse) error
 		CreateBasket(ctx context.Context, in *CreateBasketRequest, out *CreateBasketResponse) error
 		GetBasketById(ctx context.Context, in *GetBasketByIdRequest, out *GetBasketByIdResponse) error
+		CreateBasketLine(ctx context.Context, in *CreateBasketLineRequest, out *CreateBasketLineResponse) error
+		GetBasketLineById(ctx context.Context, in *GetBasketLineByIdRequest, out *GetBasketLineByIdResponse) error
+		UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, out *UpdateBasketLineResponse) error
+		DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, out *DeleteBasketLineByIdResponse) error
+		GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, out *GetBasketLinesByBasketIdResponse) error
 	}
 	type ShoppingBasket struct {
 		shoppingBasket
@@ -135,4 +200,24 @@ func (h *shoppingBasketHandler) CreateBasket(ctx context.Context, in *CreateBask
 
 func (h *shoppingBasketHandler) GetBasketById(ctx context.Context, in *GetBasketByIdRequest, out *GetBasketByIdResponse) error {
 	return h.ShoppingBasketHandler.GetBasketById(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) CreateBasketLine(ctx context.Context, in *CreateBasketLineRequest, out *CreateBasketLineResponse) error {
+	return h.ShoppingBasketHandler.CreateBasketLine(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) GetBasketLineById(ctx context.Context, in *GetBasketLineByIdRequest, out *GetBasketLineByIdResponse) error {
+	return h.ShoppingBasketHandler.GetBasketLineById(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, out *UpdateBasketLineResponse) error {
+	return h.ShoppingBasketHandler.UpdateBasketLine(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, out *DeleteBasketLineByIdResponse) error {
+	return h.ShoppingBasketHandler.DeleteBasketLineById(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, out *GetBasketLinesByBasketIdResponse) error {
+	return h.ShoppingBasketHandler.GetBasketLinesByBasketId(ctx, in, out)
 }

@@ -1,0 +1,15 @@
+
+micro call shoppingbasket ShoppingBasket.CreateBasketLine \
+'{"basket_id": "9891e2b1-f4c8-4b6b-b6d0-04390fdeb2ef", "price": 65.67, "ticket_amount": 2}'
+
+micro call shoppingbasket ShoppingBasket.DeleteBasketLineById \
+'{"basket_line_id": "6762aee1-a7bc-4c68-9a80-174f6aaff056"}'
+
+
+micro call shoppingbasket ShoppingBasket.GetBasketLineById \
+'{"basket_line_id": "6762aee1-a7bc-4c68-9a80-174f6aaff056"}' 
+
+micro call shoppingbasket ShoppingBasket.GetBasketLinesByBasketId \ 
+'{"basket_id": "9891e2b1-f4c8-4b6b-b6d0-04390fdeb2ef"}'
+
+micro call shoppingbasket ShoppingBasket.UpdateBasketLine '{"basket_line_id": "6762aee1-a7bc-4c68-9a80-174f6aaff056", "ticket_amount": 3, "price": 89.90}'

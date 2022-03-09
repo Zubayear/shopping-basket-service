@@ -1,0 +1,401 @@
+{
+  "name": "shoppingbasket",
+  "version": "latest",
+  "metadata": null,
+  "endpoints": [
+    {
+      "name": "ShoppingBasket.CreateBasket",
+      "request": {
+        "name": "CreateBasketRequest",
+        "type": "CreateBasketRequest",
+        "values": [
+          {
+            "name": "user_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "CreateBasketResponse",
+        "type": "CreateBasketResponse",
+        "values": [
+          {
+            "name": "basket",
+            "type": "Basket",
+            "values": [
+              {
+                "name": "basket_id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "user_id",
+                "type": "string",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.CreateBasketLine",
+      "request": {
+        "name": "CreateBasketLineRequest",
+        "type": "CreateBasketLineRequest",
+        "values": [
+          {
+            "name": "basket_id",
+            "type": "string",
+            "values": null
+          },
+          {
+            "name": "price",
+            "type": "float32",
+            "values": null
+          },
+          {
+            "name": "ticket_amount",
+            "type": "uint32",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "CreateBasketLineResponse",
+        "type": "CreateBasketLineResponse",
+        "values": [
+          {
+            "name": "basket_line",
+            "type": "BasketLine",
+            "values": [
+              {
+                "name": "basket_line_id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "ticket_amount",
+                "type": "uint32",
+                "values": null
+              },
+              {
+                "name": "price",
+                "type": "float32",
+                "values": null
+              },
+              {
+                "name": "basket_id",
+                "type": "string",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.CreateEvent",
+      "request": {
+        "name": "CreateEventRequest",
+        "type": "CreateEventRequest",
+        "values": [
+          {
+            "name": "name",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "CreateEventResponse",
+        "type": "CreateEventResponse",
+        "values": [
+          {
+            "name": "event",
+            "type": "Event",
+            "values": [
+              {
+                "name": "id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "date",
+                "type": "int64",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.DeleteBasketLineById",
+      "request": {
+        "name": "DeleteBasketLineByIdRequest",
+        "type": "DeleteBasketLineByIdRequest",
+        "values": [
+          {
+            "name": "basket_line_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "DeleteBasketLineByIdResponse",
+        "type": "DeleteBasketLineByIdResponse",
+        "values": [
+          {
+            "name": "msg",
+            "type": "string",
+            "values": null
+          },
+          {
+            "name": "code",
+            "type": "uint32",
+            "values": null
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.GetBasketById",
+      "request": {
+        "name": "GetBasketByIdRequest",
+        "type": "GetBasketByIdRequest",
+        "values": [
+          {
+            "name": "basket_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "GetBasketByIdResponse",
+        "type": "GetBasketByIdResponse",
+        "values": [
+          {
+            "name": "basket",
+            "type": "Basket",
+            "values": [
+              {
+                "name": "basket_id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "user_id",
+                "type": "string",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.GetBasketLineById",
+      "request": {
+        "name": "GetBasketLineByIdRequest",
+        "type": "GetBasketLineByIdRequest",
+        "values": [
+          {
+            "name": "basket_line_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "GetBasketLineByIdResponse",
+        "type": "GetBasketLineByIdResponse",
+        "values": [
+          {
+            "name": "basket_line",
+            "type": "BasketLine",
+            "values": [
+              {
+                "name": "basket_line_id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "ticket_amount",
+                "type": "uint32",
+                "values": null
+              },
+              {
+                "name": "price",
+                "type": "float32",
+                "values": null
+              },
+              {
+                "name": "basket_id",
+                "type": "string",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.GetBasketLinesByBasketId",
+      "request": {
+        "name": "GetBasketLinesByBasketIdRequest",
+        "type": "GetBasketLinesByBasketIdRequest",
+        "values": [
+          {
+            "name": "basket_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "GetBasketLinesByBasketIdResponse",
+        "type": "GetBasketLinesByBasketIdResponse",
+        "values": [
+          {
+            "name": "basket_line",
+            "type": "[]BasketLine",
+            "values": null
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.GetEventById",
+      "request": {
+        "name": "GetEventByIdRequest",
+        "type": "GetEventByIdRequest",
+        "values": [
+          {
+            "name": "id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "GetEventByIdResponse",
+        "type": "GetEventByIdResponse",
+        "values": [
+          {
+            "name": "event",
+            "type": "Event",
+            "values": [
+              {
+                "name": "id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "date",
+                "type": "int64",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    {
+      "name": "ShoppingBasket.UpdateBasketLine",
+      "request": {
+        "name": "UpdateBasketLineRequest",
+        "type": "UpdateBasketLineRequest",
+        "values": [
+          {
+            "name": "basket_line_id",
+            "type": "string",
+            "values": null
+          },
+          {
+            "name": "ticket_amount",
+            "type": "uint32",
+            "values": null
+          },
+          {
+            "name": "price",
+            "type": "float32",
+            "values": null
+          },
+          {
+            "name": "basket_id",
+            "type": "string",
+            "values": null
+          }
+        ]
+      },
+      "response": {
+        "name": "UpdateBasketLineResponse",
+        "type": "UpdateBasketLineResponse",
+        "values": [
+          {
+            "name": "basket_line",
+            "type": "BasketLine",
+            "values": [
+              {
+                "name": "basket_line_id",
+                "type": "string",
+                "values": null
+              },
+              {
+                "name": "ticket_amount",
+                "type": "uint32",
+                "values": null
+              },
+              {
+                "name": "price",
+                "type": "float32",
+                "values": null
+              },
+              {
+                "name": "basket_id",
+                "type": "string",
+                "values": null
+              }
+            ]
+          }
+        ]
+      },
+      "metadata": {}
+    }
+  ],
+  "nodes": [
+    {
+      "id": "shoppingbasket-5e56d568-2af4-4047-8037-df99c4931048",
+      "address": "192.168.0.126:60008",
+      "metadata": {
+        "broker": "http",
+        "protocol": "mucp",
+        "registry": "mdns",
+        "server": "mucp",
+        "transport": "http"
+      }
+    }
+  ]
+}

@@ -9,6 +9,11 @@ service ShoppingBasket {
 	rpc GetEventById(GetEventByIdRequest) returns (GetEventByIdResponse) {}
 	rpc CreateBasket(CreateBasketRequest) returns (CreateBasketResponse) {}
 	rpc GetBasketById(GetBasketByIdRequest) returns (GetBasketByIdResponse) {}
+	rpc CreateBasketLine(CreateBasketLineRequest) returns (CreateBasketLineResponse) {}
+	rpc GetBasketLineById(GetBasketLineByIdRequest) returns (GetBasketLineByIdResponse) {}
+	rpc UpdateBasketLine(UpdateBasketLineRequest) returns (UpdateBasketLineResponse) {}
+	rpc DeleteBasketLineById(DeleteBasketLineByIdRequest) returns (DeleteBasketLineByIdResponse) {}
+	rpc GetBasketLinesByBasketId(GetBasketLinesByBasketIdRequest) returns (GetBasketLinesByBasketIdResponse) {}
 }
 
 // Event
@@ -54,4 +59,57 @@ message GetBasketByIdRequest {
 
 message GetBasketByIdResponse {
 	Basket basket = 1;
+}
+
+// BasketLine
+message BasketLine {
+	string basket_line_id = 1;
+	uint32 ticket_amount = 2;
+	float price = 3;
+	string basket_id = 4;
+}
+
+message CreateBasketLineRequest {
+	string basket_id = 1;
+	float price = 2;
+	uint32 ticket_amount = 3;
+}
+
+message CreateBasketLineResponse {
+	BasketLine basket_line = 1;
+}
+
+message GetBasketLineByIdRequest {
+	string basket_line_id = 1;
+}
+
+message GetBasketLineByIdResponse {
+	BasketLine basket_line = 1;
+}
+
+message UpdateBasketLineRequest {
+	string basket_line_id = 1;
+	uint32 ticket_amount = 2;
+	float price = 3;
+}
+
+message UpdateBasketLineResponse {
+	BasketLine basket_line = 1;
+}
+
+message DeleteBasketLineByIdRequest {
+	string basket_line_id = 1;
+}
+
+message DeleteBasketLineByIdResponse {
+	string msg = 1;
+	uint32 code = 2;
+}
+
+message GetBasketLinesByBasketIdRequest {
+	string basket_id = 1;
+}
+
+message GetBasketLinesByBasketIdResponse {
+	repeated BasketLine basket_line = 1;
 }
