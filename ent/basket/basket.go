@@ -13,6 +13,8 @@ const (
 	FieldID = "id"
 	// FieldUserId holds the string denoting the userid field in the database.
 	FieldUserId = "user_id"
+	// FieldCouponCode holds the string denoting the couponcode field in the database.
+	FieldCouponCode = "coupon_code"
 	// EdgeBasketLine holds the string denoting the basketline edge name in mutations.
 	EdgeBasketLine = "BasketLine"
 	// Table holds the table name of the basket in the database.
@@ -30,6 +32,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldUserId,
+	FieldCouponCode,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -43,6 +46,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// CouponCodeValidator is a validator for the "CouponCode" field. It is called by the builders before save.
+	CouponCodeValidator func(string) error
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

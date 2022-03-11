@@ -18,7 +18,7 @@ type BasketRepository struct {
 }
 
 func (b *BasketRepository) AddBasket(ctx context.Context, basket *ent.Basket) (*ent.Basket, error) {
-	savedBasket, err := b.client.Basket.Create().SetUserId(basket.UserId).Save(ctx)
+	savedBasket, err := b.client.Basket.Create().SetUserId(basket.UserId).SetCouponCode(basket.CouponCode).Save(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating basket: %w", err)
 	}

@@ -100,6 +100,13 @@ func UserId(v uuid.UUID) predicate.Basket {
 	})
 }
 
+// CouponCode applies equality check predicate on the "CouponCode" field. It's identical to CouponCodeEQ.
+func CouponCode(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCouponCode), v))
+	})
+}
+
 // UserIdEQ applies the EQ predicate on the "UserId" field.
 func UserIdEQ(v uuid.UUID) predicate.Basket {
 	return predicate.Basket(func(s *sql.Selector) {
@@ -173,6 +180,117 @@ func UserIdLT(v uuid.UUID) predicate.Basket {
 func UserIdLTE(v uuid.UUID) predicate.Basket {
 	return predicate.Basket(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldUserId), v))
+	})
+}
+
+// CouponCodeEQ applies the EQ predicate on the "CouponCode" field.
+func CouponCodeEQ(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeNEQ applies the NEQ predicate on the "CouponCode" field.
+func CouponCodeNEQ(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeIn applies the In predicate on the "CouponCode" field.
+func CouponCodeIn(vs ...string) predicate.Basket {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Basket(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldCouponCode), v...))
+	})
+}
+
+// CouponCodeNotIn applies the NotIn predicate on the "CouponCode" field.
+func CouponCodeNotIn(vs ...string) predicate.Basket {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Basket(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldCouponCode), v...))
+	})
+}
+
+// CouponCodeGT applies the GT predicate on the "CouponCode" field.
+func CouponCodeGT(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeGTE applies the GTE predicate on the "CouponCode" field.
+func CouponCodeGTE(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeLT applies the LT predicate on the "CouponCode" field.
+func CouponCodeLT(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeLTE applies the LTE predicate on the "CouponCode" field.
+func CouponCodeLTE(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeContains applies the Contains predicate on the "CouponCode" field.
+func CouponCodeContains(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeHasPrefix applies the HasPrefix predicate on the "CouponCode" field.
+func CouponCodeHasPrefix(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeHasSuffix applies the HasSuffix predicate on the "CouponCode" field.
+func CouponCodeHasSuffix(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeEqualFold applies the EqualFold predicate on the "CouponCode" field.
+func CouponCodeEqualFold(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldCouponCode), v))
+	})
+}
+
+// CouponCodeContainsFold applies the ContainsFold predicate on the "CouponCode" field.
+func CouponCodeContainsFold(v string) predicate.Basket {
+	return predicate.Basket(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldCouponCode), v))
 	})
 }
 

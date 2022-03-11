@@ -17,6 +17,7 @@ func (Basket) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).Default(uuid.New),
 		field.UUID("UserId", uuid.UUID{}),
+		field.Text("CouponCode").MaxLen(6).Unique(),
 	}
 }
 

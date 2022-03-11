@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 
+	"entgo.io/ent/dialect/sql"
 	"github.com/google/uuid"
 )
 
@@ -17,6 +18,8 @@ type Basket struct {
 	ID uuid.UUID `json:"id,omitempty"`
 	// UserId holds the value of the "UserId" field.
 	UserId uuid.UUID `json:"UserId,omitempty"`
+	// CouponCode holds the value of the "CouponCode" field.
+	CouponCode string `json:"CouponCode,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the BasketQuery when eager-loading is set.
 	Edges BasketEdges `json:"edges"`
@@ -45,6 +48,8 @@ func (*Basket) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case basket.FieldCouponCode:
+			values[i] = new(sql.NullString)
 		case basket.FieldID, basket.FieldUserId:
 			values[i] = new(uuid.UUID)
 		default:
@@ -73,6 +78,12 @@ func (b *Basket) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field UserId", values[i])
 			} else if value != nil {
 				b.UserId = *value
+			}
+		case basket.FieldCouponCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field CouponCode", values[i])
+			} else if value.Valid {
+				b.CouponCode = value.String
 			}
 		}
 	}
@@ -109,6 +120,8 @@ func (b *Basket) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v", b.ID))
 	builder.WriteString(", UserId=")
 	builder.WriteString(fmt.Sprintf("%v", b.UserId))
+	builder.WriteString(", CouponCode=")
+	builder.WriteString(b.CouponCode)
 	builder.WriteByte(')')
 	return builder.String()
 }

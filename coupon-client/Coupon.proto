@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package Coupon;
+
+option go_package = "./coupon-client;Coupon";
+
+service CouponService {
+	rpc UseCoupon(UseCouponRequest) returns (UseCouponResponse) {}
+}
+
+message Coupon {
+	string coupon_id = 1;
+	string code = 2;
+	double amount = 3;
+	bool already_used = 4;
+	string expire_at = 5;
+}
+
+message UseCouponRequest {
+	string coupon_code = 1;
+}
+
+message UseCouponResponse {
+	reserved 1;
+	reserved "msg";
+	int32 used = 2;
+}

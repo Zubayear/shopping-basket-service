@@ -12,6 +12,7 @@ var (
 	BasketsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "user_id", Type: field.TypeUUID},
+		{Name: "coupon_code", Type: field.TypeString, Unique: true, Size: 6},
 	}
 	// BasketsTable holds the schema information for the "baskets" table.
 	BasketsTable = &schema.Table{

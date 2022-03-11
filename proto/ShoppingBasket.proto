@@ -47,6 +47,7 @@ message Basket {
 
 message CreateBasketRequest {
 	string user_id = 1;
+	optional string coupon_code = 2;
 }
 
 message CreateBasketResponse {

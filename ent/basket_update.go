@@ -35,6 +35,12 @@ func (bu *BasketUpdate) SetUserId(u uuid.UUID) *BasketUpdate {
 	return bu
 }
 
+// SetCouponCode sets the "CouponCode" field.
+func (bu *BasketUpdate) SetCouponCode(s string) *BasketUpdate {
+	bu.mutation.SetCouponCode(s)
+	return bu
+}
+
 // AddBasketLineIDs adds the "BasketLine" edge to the BasketLine entity by IDs.
 func (bu *BasketUpdate) AddBasketLineIDs(ids ...uuid.UUID) *BasketUpdate {
 	bu.mutation.AddBasketLineIDs(ids...)
@@ -83,12 +89,18 @@ func (bu *BasketUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(bu.hooks) == 0 {
+		if err = bu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = bu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*BasketMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = bu.check(); err != nil {
+				return 0, err
 			}
 			bu.mutation = mutation
 			affected, err = bu.sqlSave(ctx)
@@ -130,6 +142,16 @@ func (bu *BasketUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (bu *BasketUpdate) check() error {
+	if v, ok := bu.mutation.CouponCode(); ok {
+		if err := basket.CouponCodeValidator(v); err != nil {
+			return &ValidationError{Name: "CouponCode", err: fmt.Errorf(`ent: validator failed for field "Basket.CouponCode": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (bu *BasketUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -153,6 +175,13 @@ func (bu *BasketUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: basket.FieldUserId,
+		})
+	}
+	if value, ok := bu.mutation.CouponCode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: basket.FieldCouponCode,
 		})
 	}
 	if bu.mutation.BasketLineCleared() {
@@ -234,6 +263,12 @@ func (buo *BasketUpdateOne) SetUserId(u uuid.UUID) *BasketUpdateOne {
 	return buo
 }
 
+// SetCouponCode sets the "CouponCode" field.
+func (buo *BasketUpdateOne) SetCouponCode(s string) *BasketUpdateOne {
+	buo.mutation.SetCouponCode(s)
+	return buo
+}
+
 // AddBasketLineIDs adds the "BasketLine" edge to the BasketLine entity by IDs.
 func (buo *BasketUpdateOne) AddBasketLineIDs(ids ...uuid.UUID) *BasketUpdateOne {
 	buo.mutation.AddBasketLineIDs(ids...)
@@ -289,12 +324,18 @@ func (buo *BasketUpdateOne) Save(ctx context.Context) (*Basket, error) {
 		node *Basket
 	)
 	if len(buo.hooks) == 0 {
+		if err = buo.check(); err != nil {
+			return nil, err
+		}
 		node, err = buo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*BasketMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = buo.check(); err != nil {
+				return nil, err
 			}
 			buo.mutation = mutation
 			node, err = buo.sqlSave(ctx)
@@ -334,6 +375,16 @@ func (buo *BasketUpdateOne) ExecX(ctx context.Context) {
 	if err := buo.Exec(ctx); err != nil {
 		panic(err)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (buo *BasketUpdateOne) check() error {
+	if v, ok := buo.mutation.CouponCode(); ok {
+		if err := basket.CouponCodeValidator(v); err != nil {
+			return &ValidationError{Name: "CouponCode", err: fmt.Errorf(`ent: validator failed for field "Basket.CouponCode": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (buo *BasketUpdateOne) sqlSave(ctx context.Context) (_node *Basket, err error) {
@@ -376,6 +427,13 @@ func (buo *BasketUpdateOne) sqlSave(ctx context.Context) (_node *Basket, err err
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: basket.FieldUserId,
+		})
+	}
+	if value, ok := buo.mutation.CouponCode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: basket.FieldCouponCode,
 		})
 	}
 	if buo.mutation.BasketLineCleared() {

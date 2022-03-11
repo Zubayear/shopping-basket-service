@@ -27,6 +27,12 @@ func (bc *BasketCreate) SetUserId(u uuid.UUID) *BasketCreate {
 	return bc
 }
 
+// SetCouponCode sets the "CouponCode" field.
+func (bc *BasketCreate) SetCouponCode(s string) *BasketCreate {
+	bc.mutation.SetCouponCode(s)
+	return bc
+}
+
 // SetID sets the "id" field.
 func (bc *BasketCreate) SetID(u uuid.UUID) *BasketCreate {
 	bc.mutation.SetID(u)
@@ -138,6 +144,14 @@ func (bc *BasketCreate) check() error {
 	if _, ok := bc.mutation.UserId(); !ok {
 		return &ValidationError{Name: "UserId", err: errors.New(`ent: missing required field "Basket.UserId"`)}
 	}
+	if _, ok := bc.mutation.CouponCode(); !ok {
+		return &ValidationError{Name: "CouponCode", err: errors.New(`ent: missing required field "Basket.CouponCode"`)}
+	}
+	if v, ok := bc.mutation.CouponCode(); ok {
+		if err := basket.CouponCodeValidator(v); err != nil {
+			return &ValidationError{Name: "CouponCode", err: fmt.Errorf(`ent: validator failed for field "Basket.CouponCode": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -181,6 +195,14 @@ func (bc *BasketCreate) createSpec() (*Basket, *sqlgraph.CreateSpec) {
 			Column: basket.FieldUserId,
 		})
 		_node.UserId = value
+	}
+	if value, ok := bc.mutation.CouponCode(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: basket.FieldCouponCode,
+		})
+		_node.CouponCode = value
 	}
 	if nodes := bc.mutation.BasketLineIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

@@ -18,6 +18,10 @@ import (
 func init() {
 	basketFields := schema.Basket{}.Fields()
 	_ = basketFields
+	// basketDescCouponCode is the schema descriptor for CouponCode field.
+	basketDescCouponCode := basketFields[2].Descriptor()
+	// basket.CouponCodeValidator is a validator for the "CouponCode" field. It is called by the builders before save.
+	basket.CouponCodeValidator = basketDescCouponCode.Validators[0].(func(string) error)
 	// basketDescID is the schema descriptor for id field.
 	basketDescID := basketFields[0].Descriptor()
 	// basket.DefaultID holds the default value on creation for the id field.

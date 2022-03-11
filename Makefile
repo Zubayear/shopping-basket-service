@@ -29,3 +29,7 @@ test:
 .PHONY: docker
 docker:
 	@docker build -t ShoppingBasket:latest .
+
+.PHONY: coupon
+coupon:
+	@protoc --proto_path=. --micro_out=. --go_out=:. coupon-client/Coupon.proto

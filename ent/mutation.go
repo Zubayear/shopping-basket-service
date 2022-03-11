@@ -39,6 +39,7 @@ type BasketMutation struct {
 	typ                string
 	id                 *uuid.UUID
 	_UserId            *uuid.UUID
+	_CouponCode        *string
 	clearedFields      map[string]struct{}
 	_BasketLine        map[uuid.UUID]struct{}
 	removed_BasketLine map[uuid.UUID]struct{}
@@ -188,6 +189,42 @@ func (m *BasketMutation) ResetUserId() {
 	m._UserId = nil
 }
 
+// SetCouponCode sets the "CouponCode" field.
+func (m *BasketMutation) SetCouponCode(s string) {
+	m._CouponCode = &s
+}
+
+// CouponCode returns the value of the "CouponCode" field in the mutation.
+func (m *BasketMutation) CouponCode() (r string, exists bool) {
+	v := m._CouponCode
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCouponCode returns the old "CouponCode" field's value of the Basket entity.
+// If the Basket object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BasketMutation) OldCouponCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCouponCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCouponCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCouponCode: %w", err)
+	}
+	return oldValue.CouponCode, nil
+}
+
+// ResetCouponCode resets all changes to the "CouponCode" field.
+func (m *BasketMutation) ResetCouponCode() {
+	m._CouponCode = nil
+}
+
 // AddBasketLineIDs adds the "BasketLine" edge to the BasketLine entity by ids.
 func (m *BasketMutation) AddBasketLineIDs(ids ...uuid.UUID) {
 	if m._BasketLine == nil {
@@ -261,9 +298,12 @@ func (m *BasketMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BasketMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 2)
 	if m._UserId != nil {
 		fields = append(fields, basket.FieldUserId)
+	}
+	if m._CouponCode != nil {
+		fields = append(fields, basket.FieldCouponCode)
 	}
 	return fields
 }
@@ -275,6 +315,8 @@ func (m *BasketMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case basket.FieldUserId:
 		return m.UserId()
+	case basket.FieldCouponCode:
+		return m.CouponCode()
 	}
 	return nil, false
 }
@@ -286,6 +328,8 @@ func (m *BasketMutation) OldField(ctx context.Context, name string) (ent.Value, 
 	switch name {
 	case basket.FieldUserId:
 		return m.OldUserId(ctx)
+	case basket.FieldCouponCode:
+		return m.OldCouponCode(ctx)
 	}
 	return nil, fmt.Errorf("unknown Basket field %s", name)
 }
@@ -301,6 +345,13 @@ func (m *BasketMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserId(v)
+		return nil
+	case basket.FieldCouponCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCouponCode(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Basket field %s", name)
@@ -353,6 +404,9 @@ func (m *BasketMutation) ResetField(name string) error {
 	switch name {
 	case basket.FieldUserId:
 		m.ResetUserId()
+		return nil
+	case basket.FieldCouponCode:
+		m.ResetCouponCode()
 		return nil
 	}
 	return fmt.Errorf("unknown Basket field %s", name)
