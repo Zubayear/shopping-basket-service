@@ -1,0 +1,492 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ShoppingBasket.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ShoppingBasket"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/events": {
+      "post": {
+        "operationId": "ShoppingBasket_CreateEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketCreateEventResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketCreateEventRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
+    "/api/events/{id}": {
+      "get": {
+        "operationId": "ShoppingBasket_GetEventById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketGetEventByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
+    "/api/shoppingbaskets/{basketId_1}": {
+      "get": {
+        "operationId": "ShoppingBasket_GetBasketLinesByBasketId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketGetBasketLinesByBasketIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketId_1",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
+    "/api/shoppingbaskets/{basketId}": {
+      "get": {
+        "operationId": "ShoppingBasket_GetBasketById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketGetBasketByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      },
+      "post": {
+        "operationId": "ShoppingBasket_CreateBasketLine",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketCreateBasketLineResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "ticketAmount": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
+    "/api/shoppingbaskets/{basketLineId}": {
+      "get": {
+        "operationId": "ShoppingBasket_GetBasketLineById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketGetBasketLineByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketLineId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      },
+      "delete": {
+        "operationId": "ShoppingBasket_DeleteBasketLineById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketDeleteBasketLineByIdResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketLineId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      },
+      "put": {
+        "operationId": "ShoppingBasket_UpdateBasketLine",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketUpdateBasketLineResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "basketLineId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "ticketAmount": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
+    "/api/shoppingbaskets/{userId}/{couponCode}": {
+      "post": {
+        "operationId": "ShoppingBasket_CreateBasket",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketCreateBasketResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "couponCode",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ShoppingBasketBasket": {
+      "type": "object",
+      "properties": {
+        "basketId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "title": "Basket"
+    },
+    "ShoppingBasketBasketLine": {
+      "type": "object",
+      "properties": {
+        "basketLineId": {
+          "type": "string"
+        },
+        "ticketAmount": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "basketId": {
+          "type": "string"
+        }
+      },
+      "title": "BasketLine"
+    },
+    "ShoppingBasketCreateBasketLineResponse": {
+      "type": "object",
+      "properties": {
+        "basketLine": {
+          "$ref": "#/definitions/ShoppingBasketBasketLine"
+        }
+      }
+    },
+    "ShoppingBasketCreateBasketResponse": {
+      "type": "object",
+      "properties": {
+        "basket": {
+          "$ref": "#/definitions/ShoppingBasketBasket"
+        }
+      }
+    },
+    "ShoppingBasketCreateEventRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ShoppingBasketCreateEventResponse": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/ShoppingBasketEvent"
+        }
+      }
+    },
+    "ShoppingBasketDeleteBasketLineByIdResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ShoppingBasketEvent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "Event"
+    },
+    "ShoppingBasketGetBasketByIdResponse": {
+      "type": "object",
+      "properties": {
+        "basket": {
+          "$ref": "#/definitions/ShoppingBasketBasket"
+        }
+      }
+    },
+    "ShoppingBasketGetBasketLineByIdResponse": {
+      "type": "object",
+      "properties": {
+        "basketLine": {
+          "$ref": "#/definitions/ShoppingBasketBasketLine"
+        }
+      }
+    },
+    "ShoppingBasketGetBasketLinesByBasketIdResponse": {
+      "type": "object",
+      "properties": {
+        "basketLine": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShoppingBasketBasketLine"
+          }
+        }
+      }
+    },
+    "ShoppingBasketGetEventByIdResponse": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "$ref": "#/definitions/ShoppingBasketEvent"
+        }
+      }
+    },
+    "ShoppingBasketUpdateBasketLineResponse": {
+      "type": "object",
+      "properties": {
+        "basketLine": {
+          "$ref": "#/definitions/ShoppingBasketBasketLine"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

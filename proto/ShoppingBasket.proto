@@ -3,17 +3,57 @@ syntax = "proto3";
 package ShoppingBasket;
 
 option go_package = "./proto;ShoppingBasket";
+import "google/api/annotations.proto";
 
 service ShoppingBasket {
-	rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {}
-	rpc GetEventById(GetEventByIdRequest) returns (GetEventByIdResponse) {}
-	rpc CreateBasket(CreateBasketRequest) returns (CreateBasketResponse) {}
-	rpc GetBasketById(GetBasketByIdRequest) returns (GetBasketByIdResponse) {}
-	rpc CreateBasketLine(CreateBasketLineRequest) returns (CreateBasketLineResponse) {}
-	rpc GetBasketLineById(GetBasketLineByIdRequest) returns (GetBasketLineByIdResponse) {}
-	rpc UpdateBasketLine(UpdateBasketLineRequest) returns (UpdateBasketLineResponse) {}
-	rpc DeleteBasketLineById(DeleteBasketLineByIdRequest) returns (DeleteBasketLineByIdResponse) {}
-	rpc GetBasketLinesByBasketId(GetBasketLinesByBasketIdRequest) returns (GetBasketLinesByBasketIdResponse) {}
+	rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse) {
+		option (google.api.http) = {
+			post: "/api/events"
+			body: "*"
+		};
+	}
+	rpc GetEventById(GetEventByIdRequest) returns (GetEventByIdResponse) {
+		option (google.api.http) = {
+			get: "/api/events/{id}"
+		};
+	}
+	rpc CreateBasket(CreateBasketRequest) returns (CreateBasketResponse) {
+		option (google.api.http) = {
+			post: "/api/shoppingbaskets/{userId}/{couponCode}"
+		};
+	}
+	rpc GetBasketById(GetBasketByIdRequest) returns (GetBasketByIdResponse) {
+		option (google.api.http) = {
+			get: "/api/shoppingbaskets/{basketId}"
+		};
+	}
+	rpc CreateBasketLine(CreateBasketLineRequest) returns (CreateBasketLineResponse) {
+		option (google.api.http) = {
+			post: "/api/shoppingbaskets/{basketId}"
+			body: "*"
+		};
+	}
+	rpc GetBasketLineById(GetBasketLineByIdRequest) returns (GetBasketLineByIdResponse) {
+		option (google.api.http) = {
+			get: "/api/shoppingbaskets/{basketLineId}"
+		};
+	}
+	rpc UpdateBasketLine(UpdateBasketLineRequest) returns (UpdateBasketLineResponse) {
+		option (google.api.http) = {
+			put: "/api/shoppingbaskets/{basketLineId}"
+			body: "*"
+		};
+	}
+	rpc DeleteBasketLineById(DeleteBasketLineByIdRequest) returns (DeleteBasketLineByIdResponse) {
+		option (google.api.http) = {
+			delete: "/api/shoppingbaskets/{basketLineId}"
+		};
+	}
+	rpc GetBasketLinesByBasketId(GetBasketLinesByBasketIdRequest) returns (GetBasketLinesByBasketIdResponse) {
+		option (google.api.http) = {
+			get: "/api/shoppingbaskets/{basketId}"
+		};
+	}
 }
 
 // Event
@@ -46,8 +86,8 @@ message Basket {
 }
 
 message CreateBasketRequest {
-	string user_id = 1;
-	optional string coupon_code = 2;
+	string userId = 1;
+	string couponCode = 2;
 }
 
 message CreateBasketResponse {
@@ -55,7 +95,7 @@ message CreateBasketResponse {
 }
 
 message GetBasketByIdRequest {
-	string basket_id = 1;
+	string basketId = 1;
 }
 
 message GetBasketByIdResponse {
@@ -71,7 +111,7 @@ message BasketLine {
 }
 
 message CreateBasketLineRequest {
-	string basket_id = 1;
+	string basketId = 1;
 	float price = 2;
 	uint32 ticket_amount = 3;
 }
@@ -81,7 +121,7 @@ message CreateBasketLineResponse {
 }
 
 message GetBasketLineByIdRequest {
-	string basket_line_id = 1;
+	string basketLineId = 1;
 }
 
 message GetBasketLineByIdResponse {
@@ -89,7 +129,7 @@ message GetBasketLineByIdResponse {
 }
 
 message UpdateBasketLineRequest {
-	string basket_line_id = 1;
+	string basketLineId = 1;
 	uint32 ticket_amount = 2;
 	float price = 3;
 }
@@ -99,7 +139,7 @@ message UpdateBasketLineResponse {
 }
 
 message DeleteBasketLineByIdRequest {
-	string basket_line_id = 1;
+	string basketLineId = 1;
 }
 
 message DeleteBasketLineByIdResponse {
@@ -108,7 +148,7 @@ message DeleteBasketLineByIdResponse {
 }
 
 message GetBasketLinesByBasketIdRequest {
-	string basket_id = 1;
+	string basketId = 1;
 }
 
 message GetBasketLinesByBasketIdResponse {

@@ -122,14 +122,14 @@ func (e *ShoppingBasket) GetBasketLinesByBasketId(ctx context.Context, request *
 func (e *ShoppingBasket) CreateBasket(ctx context.Context, request *pb.CreateBasketRequest, response *pb.CreateBasketResponse) error {
 	log.Infof("Received ShoppingBasket.CreateBasket request: %v", request)
 	userId := uuid.MustParse(request.UserId)
-	basketToSave := &ent.Basket{UserId: userId, CouponCode: *request.CouponCode}
+	basketToSave := &ent.Basket{UserId: userId, CouponCode: request.CouponCode}
 	basketFromRepo, err := e.basketRepo.AddBasket(ctx, basketToSave)
 	if err != nil {
 		return err
 	}
 	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
 	couponStatus, err := couponClient.UseCoupon(ctx, &Coupon.UseCouponRequest{
-		CouponCode: *request.CouponCode,
+		CouponCode: request.CouponCode,
 	})
 	if err != nil {
 		return err

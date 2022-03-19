@@ -33,3 +33,16 @@ docker:
 .PHONY: coupon
 coupon:
 	@protoc --proto_path=. --micro_out=. --go_out=:. coupon-client/Coupon.proto
+
+.PHONY: gen_grpc_gateway
+gen_grpc_gateway:
+	@protoc --proto_path=./proto --micro_out=. --grpc-gateway_out=logtostderr=true,register_func_suffix=SB:. --openapiv2_out=./proto --openapiv2_opt=logtostderr=true --openapiv2_opt=use_go_templates=true --go_out=plugins=grpc:. ./proto/ShoppingBasket.proto
+
+.PHONY: run_service
+DEFAULT_PORT=60008
+run_service:
+	@go run main.go --server_address=localhost:$(DEFAULT_PORT)
+
+.PHONY: run_gateway
+run_gateway:
+	@go run gateway/gateway.go
