@@ -4,8 +4,6 @@ go 1.16
 
 require (
 	entgo.io/ent v0.10.1
-	github.com/Microsoft/go-winio v0.5.2 // indirect
-	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f // indirect
 	github.com/asim/go-micro/plugins/config/encoder/yaml/v4 v4.0.0-20220304145315-a2f6fac85247
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
@@ -17,12 +15,7 @@ require (
 	github.com/miekg/dns v1.1.46 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/stretchr/testify v1.7.1-0.20210427113832-6241f9ab9942
-	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	go-micro.dev/v4 v4.6.0
-	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
-	golang.org/x/tools v0.1.9 // indirect
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa
 	google.golang.org/grpc v1.42.0
 	google.golang.org/protobuf v1.27.1

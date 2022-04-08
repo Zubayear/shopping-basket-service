@@ -4,6 +4,8 @@ import (
 	"ShoppingBasket/di"
 	pb "ShoppingBasket/proto"
 	"go-micro.dev/v4"
+	"go-micro.dev/v4/broker"
+	"go-micro.dev/v4/cmd"
 	log "go-micro.dev/v4/logger"
 )
 
@@ -34,6 +36,15 @@ func main() {
 		return
 	}
 	// Run service
+
+	cmd.Init()
+
+	if err := broker.Init(); err != nil {
+		log.Fatalf("Broker Init error: %v", err)
+	}
+	if err := broker.Connect(); err != nil {
+		log.Fatalf("Broker Connect error: %v", err)
+	}
 
 	if err := srv.Run(); err != nil {
 		log.Fatal(err)

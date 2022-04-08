@@ -3,6 +3,8 @@ package handler
 import (
 	Coupon "ShoppingBasket/coupon-client"
 	"ShoppingBasket/ent"
+	"ShoppingBasket/model"
+	"ShoppingBasket/publisher"
 	"ShoppingBasket/repository"
 	"context"
 	"fmt"
@@ -13,11 +15,89 @@ import (
 	pb "ShoppingBasket/proto"
 )
 
+var topic = "shoppingBasket.topic.checkoutMessage"
+
 type ShoppingBasket struct {
 	// need this repo impl for saving to db from service
 	basketRepo     repository.IBasketRepository
 	basketLineRepo repository.IBasketLineRepository
 	eventRepo      repository.IEventRepository
+}
+
+func (e *ShoppingBasket) Checkout(ctx context.Context, request *pb.BasketCheckoutRequest, response *pb.BasketCheckoutResponse) error {
+	basketId, err := uuid.Parse(request.BasketId)
+	if err != nil {
+		return fmt.Errorf("failed parsing basket id: %w", err)
+	}
+	basketFromRepo, err := e.basketRepo.GetBasketById(ctx, basketId)
+	if err != nil {
+		return err
+	}
+	var basketCheckoutMessage model.BasketCheckoutMessage
+	err = mapper(request, &basketCheckoutMessage)
+	if err != nil {
+		return err
+	}
+	basketCheckoutMessage.BasketLines = make([]model.BasketLineMessage, 0)
+	total := 0.0
+	basketLinesFromRepo, err := e.basketLineRepo.GetBasketLinesByBasketId(ctx, basketId)
+	if err != nil {
+		return err
+	}
+	for _, basketLine := range basketLinesFromRepo {
+		basketLineMsg := &model.BasketLineMessage{
+			BasketLineId: basketLine.ID,
+			Price:        basketLine.Price,
+			TicketAmount: basketLine.TicketAmount,
+		}
+		res := float64(basketLine.TicketAmount) * float64(basketLine.Price)
+		total += res
+		basketCheckoutMessage.BasketLines = append(basketCheckoutMessage.BasketLines, *basketLineMsg)
+	}
+
+	couponClient := Coupon.NewCouponService("coupon", client.DefaultClient)
+	coupon, err := couponClient.GetCouponByCode(ctx, &Coupon.GetCouponByCodeRequest{CouponCode: basketFromRepo.CouponCode})
+	if err != nil {
+		return err
+	}
+
+	if !coupon.Coupon.AlreadyUsed {
+		basketCheckoutMessage.BasketTotal = total - coupon.Coupon.Amount
+	} else {
+		basketCheckoutMessage.BasketTotal = total
+	}
+	err = publisher.PublishMessage(basketCheckoutMessage, topic)
+	if err != nil {
+		return err
+	}
+	response.Msg = "Message published"
+	response.Code = "9000"
+	return nil
+}
+
+func mapper(request *pb.BasketCheckoutRequest, m *model.BasketCheckoutMessage) error {
+	userId, err := uuid.Parse(request.UserId)
+	if err != nil {
+		return fmt.Errorf("failed parsing user id: %w", err)
+	}
+	basketId, err := uuid.Parse(request.BasketId)
+	if err != nil {
+		return err
+	}
+	m.BasketId = basketId
+	m.FirstName = request.FirstName
+	m.LastName = request.LastName
+	m.Email = request.Email
+	m.Address = request.Address
+	m.ZipCode = request.ZipCode
+	m.City = request.City
+	m.Country = request.Country
+	m.UserId = userId
+	m.CardNumber = request.CardNumber
+	m.CardName = request.CardName
+	m.CardExpiration = request.CardExpiration
+	m.CvvCode = request.CvvCode
+	return nil
 }
 
 func (e *ShoppingBasket) CreateBasketLine(ctx context.Context, request *pb.CreateBasketLineRequest, response *pb.CreateBasketLineResponse) error {

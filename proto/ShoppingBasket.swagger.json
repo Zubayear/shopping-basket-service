@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/api/checkout": {
+      "post": {
+        "operationId": "ShoppingBasket_Checkout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketBasketCheckoutResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ShoppingBasketBasketCheckoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ShoppingBasket"
+        ]
+      }
+    },
     "/api/events": {
       "post": {
         "operationId": "ShoppingBasket_CreateEvent",
@@ -337,6 +369,61 @@
         }
       },
       "title": "Basket"
+    },
+    "ShoppingBasketBasketCheckoutRequest": {
+      "type": "object",
+      "properties": {
+        "basketId": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "cardNumber": {
+          "type": "string"
+        },
+        "cardName": {
+          "type": "string"
+        },
+        "cardExpiration": {
+          "type": "string"
+        },
+        "cvvCode": {
+          "type": "string"
+        }
+      }
+    },
+    "ShoppingBasketBasketCheckoutResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      }
     },
     "ShoppingBasketBasketLine": {
       "type": "object",

@@ -6,6 +6,7 @@ option go_package = "./coupon-client;Coupon";
 
 service CouponService {
 	rpc UseCoupon(UseCouponRequest) returns (UseCouponResponse) {}
+	rpc GetCouponByCode(GetCouponByCodeRequest) returns (GetCouponByCodeResponse) {}
 }
 
 message Coupon {
@@ -24,4 +25,12 @@ message UseCouponResponse {
 	reserved 1;
 	reserved "msg";
 	int32 used = 2;
+}
+
+message GetCouponByCodeRequest {
+	string couponCode = 1;
+}
+
+message GetCouponByCodeResponse {
+	Coupon coupon = 1;
 }

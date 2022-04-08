@@ -44,5 +44,6 @@ run_service:
 	@go run main.go --server_address=localhost:$(DEFAULT_PORT)
 
 .PHONY: run_gateway
+DEFAULT_PORT=6008
 run_gateway:
-	@go run gateway/gateway.go
+	@go run gateway/gateway.go -gateway=$(DEFAULT_PORT)

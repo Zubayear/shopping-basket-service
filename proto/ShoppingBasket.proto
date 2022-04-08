@@ -54,6 +54,12 @@ service ShoppingBasket {
 			get: "/api/shoppingbaskets/{basketId}"
 		};
 	}
+	rpc Checkout(BasketCheckoutRequest) returns (BasketCheckoutResponse) {
+		option (google.api.http) = {
+			post: "/api/checkout",
+			body: "*"
+		};
+	}
 }
 
 // Event
@@ -153,4 +159,24 @@ message GetBasketLinesByBasketIdRequest {
 
 message GetBasketLinesByBasketIdResponse {
 	repeated BasketLine basket_line = 1;
+}
+
+message BasketCheckoutRequest {
+	string basket_id = 1;
+	string first_name = 2;
+	string last_name = 3;
+	string email = 4;
+	string address = 5;
+	string zip_code = 6;
+	string city = 7;
+	string country = 8;
+	string user_id = 9;
+	string card_number = 10;
+	string card_name = 11;
+	string card_expiration = 12;
+	string cvv_code = 13;
+}
+message BasketCheckoutResponse {
+	string msg = 1;
+	string code = 2;
 }

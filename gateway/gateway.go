@@ -79,6 +79,11 @@ func main() {
 type ShoppingBasketProxy struct {
 }
 
+func (s *ShoppingBasketProxy) Checkout(ctx context.Context, request *ShoppingBasket.BasketCheckoutRequest) (*ShoppingBasket.BasketCheckoutResponse, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (s *ShoppingBasketProxy) CreateEvent(ctx context.Context, request *ShoppingBasket.CreateEventRequest) (*ShoppingBasket.CreateEventResponse, error) {
 	response, err := shoppingBasketClient.CreateEvent(ctx, request)
 	if err != nil {

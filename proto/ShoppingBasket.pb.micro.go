@@ -91,6 +91,13 @@ func NewShoppingBasketEndpoints() []*api.Endpoint {
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
+		{
+			Name:    "ShoppingBasket.Checkout",
+			Path:    []string{"/api/checkout"},
+			Method:  []string{"POST"},
+			Body:    "*",
+			Handler: "rpc",
+		},
 	}
 }
 
@@ -106,6 +113,7 @@ type ShoppingBasketService interface {
 	UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, opts ...client.CallOption) (*UpdateBasketLineResponse, error)
 	DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, opts ...client.CallOption) (*DeleteBasketLineByIdResponse, error)
 	GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, opts ...client.CallOption) (*GetBasketLinesByBasketIdResponse, error)
+	Checkout(ctx context.Context, in *BasketCheckoutRequest, opts ...client.CallOption) (*BasketCheckoutResponse, error)
 }
 
 type shoppingBasketService struct {
@@ -210,6 +218,16 @@ func (c *shoppingBasketService) GetBasketLinesByBasketId(ctx context.Context, in
 	return out, nil
 }
 
+func (c *shoppingBasketService) Checkout(ctx context.Context, in *BasketCheckoutRequest, opts ...client.CallOption) (*BasketCheckoutResponse, error) {
+	req := c.c.NewRequest(c.name, "ShoppingBasket.Checkout", in)
+	out := new(BasketCheckoutResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for ShoppingBasket service
 
 type ShoppingBasketHandler interface {
@@ -222,6 +240,7 @@ type ShoppingBasketHandler interface {
 	UpdateBasketLine(context.Context, *UpdateBasketLineRequest, *UpdateBasketLineResponse) error
 	DeleteBasketLineById(context.Context, *DeleteBasketLineByIdRequest, *DeleteBasketLineByIdResponse) error
 	GetBasketLinesByBasketId(context.Context, *GetBasketLinesByBasketIdRequest, *GetBasketLinesByBasketIdResponse) error
+	Checkout(context.Context, *BasketCheckoutRequest, *BasketCheckoutResponse) error
 }
 
 func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, opts ...server.HandlerOption) error {
@@ -235,6 +254,7 @@ func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, 
 		UpdateBasketLine(ctx context.Context, in *UpdateBasketLineRequest, out *UpdateBasketLineResponse) error
 		DeleteBasketLineById(ctx context.Context, in *DeleteBasketLineByIdRequest, out *DeleteBasketLineByIdResponse) error
 		GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, out *GetBasketLinesByBasketIdResponse) error
+		Checkout(ctx context.Context, in *BasketCheckoutRequest, out *BasketCheckoutResponse) error
 	}
 	type ShoppingBasket struct {
 		shoppingBasket
@@ -299,6 +319,13 @@ func RegisterShoppingBasketHandler(s server.Server, hdlr ShoppingBasketHandler, 
 		Method:  []string{"GET"},
 		Handler: "rpc",
 	}))
+	opts = append(opts, api.WithEndpoint(&api.Endpoint{
+		Name:    "ShoppingBasket.Checkout",
+		Path:    []string{"/api/checkout"},
+		Method:  []string{"POST"},
+		Body:    "*",
+		Handler: "rpc",
+	}))
 	return s.Handle(s.NewHandler(&ShoppingBasket{h}, opts...))
 }
 
@@ -340,4 +367,8 @@ func (h *shoppingBasketHandler) DeleteBasketLineById(ctx context.Context, in *De
 
 func (h *shoppingBasketHandler) GetBasketLinesByBasketId(ctx context.Context, in *GetBasketLinesByBasketIdRequest, out *GetBasketLinesByBasketIdResponse) error {
 	return h.ShoppingBasketHandler.GetBasketLinesByBasketId(ctx, in, out)
+}
+
+func (h *shoppingBasketHandler) Checkout(ctx context.Context, in *BasketCheckoutRequest, out *BasketCheckoutResponse) error {
+	return h.ShoppingBasketHandler.Checkout(ctx, in, out)
 }

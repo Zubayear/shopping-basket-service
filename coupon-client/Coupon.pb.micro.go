@@ -37,6 +37,7 @@ func NewCouponServiceEndpoints() []*api.Endpoint {
 
 type CouponService interface {
 	UseCoupon(ctx context.Context, in *UseCouponRequest, opts ...client.CallOption) (*UseCouponResponse, error)
+	GetCouponByCode(ctx context.Context, in *GetCouponByCodeRequest, opts ...client.CallOption) (*GetCouponByCodeResponse, error)
 }
 
 type couponService struct {
@@ -61,15 +62,27 @@ func (c *couponService) UseCoupon(ctx context.Context, in *UseCouponRequest, opt
 	return out, nil
 }
 
+func (c *couponService) GetCouponByCode(ctx context.Context, in *GetCouponByCodeRequest, opts ...client.CallOption) (*GetCouponByCodeResponse, error) {
+	req := c.c.NewRequest(c.name, "CouponService.GetCouponByCode", in)
+	out := new(GetCouponByCodeResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for CouponService service
 
 type CouponServiceHandler interface {
 	UseCoupon(context.Context, *UseCouponRequest, *UseCouponResponse) error
+	GetCouponByCode(context.Context, *GetCouponByCodeRequest, *GetCouponByCodeResponse) error
 }
 
 func RegisterCouponServiceHandler(s server.Server, hdlr CouponServiceHandler, opts ...server.HandlerOption) error {
 	type couponService interface {
 		UseCoupon(ctx context.Context, in *UseCouponRequest, out *UseCouponResponse) error
+		GetCouponByCode(ctx context.Context, in *GetCouponByCodeRequest, out *GetCouponByCodeResponse) error
 	}
 	type CouponService struct {
 		couponService
@@ -84,4 +97,8 @@ type couponServiceHandler struct {
 
 func (h *couponServiceHandler) UseCoupon(ctx context.Context, in *UseCouponRequest, out *UseCouponResponse) error {
 	return h.CouponServiceHandler.UseCoupon(ctx, in, out)
+}
+
+func (h *couponServiceHandler) GetCouponByCode(ctx context.Context, in *GetCouponByCodeRequest, out *GetCouponByCodeResponse) error {
+	return h.CouponServiceHandler.GetCouponByCode(ctx, in, out)
 }
